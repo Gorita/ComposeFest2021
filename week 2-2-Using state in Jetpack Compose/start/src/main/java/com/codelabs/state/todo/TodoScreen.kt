@@ -50,7 +50,7 @@ fun TodoScreen(
 ) {
     Column {
         TodoItemInputBackground(elevate = true, modifier = Modifier.fillMaxWidth()) {
-            TodoItemInput(onItemComplete = onAddItem)
+            TodoItemEntryInput(onItemComplete = onAddItem)
         }
         LazyColumn(
             modifier = Modifier.weight(1f),
@@ -116,7 +116,7 @@ fun TodoInputTextField(
 }
 
 @Composable
-fun TodoItemInput(onItemComplete: (TodoItem) -> Unit) {
+fun TodoItemEntryInput(onItemComplete: (TodoItem) -> Unit) {
     val (text, setText) = remember { mutableStateOf("") }
     val (icon, setIcon) = remember { mutableStateOf(TodoIcon.Default) }
     val iconsVisible = text.isNotBlank()
@@ -125,6 +125,18 @@ fun TodoItemInput(onItemComplete: (TodoItem) -> Unit) {
         setIcon(TodoIcon.Default)
         setText("")
     }
+    TodoItemInput(text, setText, submit, iconsVisible, icon, setIcon)
+}
+
+@Composable
+private fun TodoItemInput(
+    text: String,
+    setText: (String) -> Unit,
+    submit: () -> Unit,
+    iconsVisible: Boolean,
+    icon: TodoIcon,
+    setIcon: (TodoIcon) -> Unit
+) {
     Column {
         Row(
             Modifier
@@ -179,4 +191,4 @@ fun PreviewTodoRow() {
 
 @Preview
 @Composable
-fun PreviewTodoItemInput() = TodoItemInput(onItemComplete = { })
+fun PreviewTodoItemInput() = TodoItemEntryInput(onItemComplete = { })
